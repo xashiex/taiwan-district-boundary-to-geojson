@@ -5,7 +5,7 @@
 * 一個縣市一個檔，輸出檔名依[戶役政資訊系統資料代碼](https://zh.wikipedia.org/wiki/戶役政資訊系統資料代碼)命名。例如：台北市: 63.json, 新北市: 65.json, 新竹市: 10018.json
 
 ## demo
-* https://xashiex.github.io/taiwan-district-boundary-to-geojson/index.html
+* https://xashiex.github.io/taiwan-district-boundary-to-geojson/
 * ref: https://developers.google.com/maps/documentation/javascript/datalayer#load_geojson
 
 ## usage
