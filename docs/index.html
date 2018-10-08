@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>台灣鄉鎮市區界線</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <script src="style.js"></script>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      var MIN_ZOOM = 10;
+      var map;
+      function initMap() {
+        var infoWindow = new google.maps.InfoWindow();
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 11,
+          center: {lat: 25.049504135000063, lng: 121.57995062700002},
+          styles: getMapStyle()
+        });
+
+        map.data.addListener('mouseover', function(event) {
+          map.data.revertStyle();
+          map.data.overrideStyle(event.feature, {fillOpacity: 0.3});
+
+          infoWindow.setContent(event.feature.getProperty('name'));
+          infoWindow.setPosition({
+            lat: Number(event.feature.getProperty('centerLat')),
+            lng: Number(event.feature.getProperty('centerLng'))
+          });
+          infoWindow.open(map);
+        });
+
+        map.data.addListener('mouseout', function(event) {
+          map.data.revertStyle();
+        });
+
+        map.data.addListener('addfeature', function(event) {
+          setBoundaryVisible(event.feature);
+        });
+
+        map.addListener('zoom_changed', function() {
+          map.data.forEach(function(feature) {
+            setBoundaryVisible(feature);
+          });
+        });
+
+        // ref: https://zh.wikipedia.org/wiki/戶役政資訊系統資料代碼
+        // 台北市: 63, 新北市: 65, 桃園市: 68, 新竹市: 10018, 新竹縣: 10004
+        var files = ['63', '65'];
+        var dataPath = 'data/';
+        for (var i = 0; i < files.length; i++) {
+          var file = dataPath + files[i] + '.json';
+          map.data.loadGeoJson(file);
+        }
+      }
+      function setBoundaryVisible(feature) {
+        if (feature.getProperty('type') !== 'TaiwanDistrictBoundary') return;
+        map.data.overrideStyle(feature, {
+          visible: map.getZoom() > MIN_ZOOM
+        });
+      }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxJYhJsTzzQCvejYGc_ppi01EVgLoMu9I&callback=initMap"></script>
+  </body>
+</html>

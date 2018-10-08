@@ -1,0 +1,16 @@
+{
+  "name": "gml2geojson",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "Ash Hsieh",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {
+    "lodash": "^4.17.5",
+    "xml2js": "^0.4.19"
+  }
+}
